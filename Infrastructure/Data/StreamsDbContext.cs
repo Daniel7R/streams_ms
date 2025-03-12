@@ -27,7 +27,7 @@ namespace StreamsMS.Infrastructure.Data
             modelBuilder.Entity<Streams>().Property(s => s.Id).HasColumnName("id").ValueGeneratedOnAdd();
             modelBuilder.Entity<Streams>().Property(s => s.IdPlatform).HasColumnName("id_platform");
             modelBuilder.Entity<Streams>().Property(s => s.IdMatch).HasColumnName("id_match");
-            modelBuilder.Entity<Streams>().Property(s => s.UrlStream).HasColumnName("url_stream");
+            modelBuilder.Entity<Streams>().Property(s => s.UrlStream).HasColumnName("url_stream").HasConversion<string>();
             
             modelBuilder.Entity<Streams>()
                 .HasIndex(s => new { s.IdMatch, s.IdPlatform })
@@ -35,8 +35,9 @@ namespace StreamsMS.Infrastructure.Data
 
             modelBuilder.Entity<Streams>()
                 .HasOne<Platforms>()
-                .WithOne(p => p.Stream)
-                .HasForeignKey<Streams>(s => s.IdPlatform);
+                .WithMany(p => p.Streams)
+                .HasForeignKey(s => s.IdPlatform)
+                .OnDelete(DeleteBehavior.Cascade);
 
             var listPlatforms = new List<Platforms>()
             {

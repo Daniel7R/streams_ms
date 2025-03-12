@@ -6,12 +6,16 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>28302da8-0ac6-4b3d-b07d-0dcd55350d48</UserSecretsId>
 		 <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="DotNetEnv" Version="3.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.1.0" />
 		<PackageReference Include="StackExchange.Redis" Version="2.8.24" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
@@ -26,8 +30,6 @@
 
 	<ItemGroup>
 		<Folder Include="Application\Mapping\" />
-		<Folder Include="Domain\Enums\" />
-		<Folder Include="Infrastructure\Repository\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,11 +39,9 @@
 	    <DependentUpon>.gitignore</DependentUpon>
 	  </None>
 	</ItemGroup>
-
 	<ItemGroup>
-	  <None Update=".gitignore">
-	    <Generator>TextTemplatingFileGenerator</Generator>
-	    <LastGenOutput>.cs</LastGenOutput>
+	  <None Update="Infrastructure\Security\client_rabbit.pfx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
 

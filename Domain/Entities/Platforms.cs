@@ -6,6 +6,6 @@ namespace StreamsMS.Domain.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Streams Stream { get; set; }
+        public List<Streams> Streams { get; set; }
     }
 }
