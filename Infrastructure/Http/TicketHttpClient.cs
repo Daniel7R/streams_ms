@@ -1,4 +1,6 @@
-﻿using StreamsMS.Application.DTOs.Request;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using StreamsMS.Application.DTOs.Request;
 using StreamsMS.Domain.Exceptions;
 using System.Text;
 using System.Text.Json;
@@ -18,7 +20,7 @@ namespace StreamsMS.Infrastructure.Http
 
         public async Task<HttpResponseMessage> UseTicket(UseTicketRequest request)
         {
-            var jsonContent = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
+            var jsonContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
 
             var apiKey = _config["APIKEY:TICKETS"];
 
@@ -29,7 +31,9 @@ namespace StreamsMS.Infrastructure.Http
 
             if(!response.IsSuccessStatusCode)
             {
-                throw new BusinessRuleException($"Error calling ms, {response.StatusCode}: {response.Content}");
+                var body = await  response.Content.ReadAsStringAsync();
+                var message = JsonConvert.DeserializeObject<JObject>(body);
+                throw new BusinessRuleException($"{message["message"]}");
             }
 
             return response;

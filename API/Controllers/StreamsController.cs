@@ -133,14 +133,19 @@ namespace StreamsMS.API.Controllers
 
                 response.Message = "Successfully joined";
                 return Ok(response);
-            } catch(BusinessRuleException ex)
+            } catch(BusinessRuleException br)
             {
-                response.Message = ex.Message;
+                response.Message = br.Message;
                 return BadRequest(response);
             } catch(HttpRequestException he)
             {
                 response.Message = he.Message;
                 return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                response.Message = "An unexpected error occurred";
+                return StatusCode(500, response); 
             }
 
         }
@@ -153,13 +158,25 @@ namespace StreamsMS.API.Controllers
         [Route("participant/join", Name = "ParticipantJoin")]
         public async Task<IActionResult> JoinStreamParticipant([FromBody]UseTicketRequest request)
         {
-            var user = ExtractUserId();
-            if (string.IsNullOrEmpty(user)) throw new BusinessRuleException("Invalid User");
-            int idUser = Convert.ToInt32(user);
-            request.IdUser = idUser;
-            await _streamService.JoinStream(request, Roles.PARTICIPANT);
-            return Ok();
-            throw new NotImplementedException();
+            ResponseDTO<bool?> response = new ResponseDTO<bool?>();
+            try
+            {
+                var user = ExtractUserId();
+                if (string.IsNullOrEmpty(user)) throw new BusinessRuleException("Invalid User");
+                int idUser = Convert.ToInt32(user);
+                request.IdUser = idUser;
+                await _streamService.JoinStream(request, Roles.PARTICIPANT);
+                
+                return Ok(response);
+            } catch(BusinessRuleException br)
+            {
+                response.Message = br.Message;
+                return BadRequest(response);
+            } catch(Exception ex)
+            {
+                response.Message = ex.Message;
+                return BadRequest(response);
+            }
         }
 
 

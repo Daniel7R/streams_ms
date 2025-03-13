@@ -118,36 +118,31 @@ namespace StreamsMS.Application.Services
 
         public async Task JoinStream(UseTicketRequest request, Roles roleJoiner)
         {
+
+
             //VALIDATE TOURNAMENT IS FREE
             var isFreeMatchTournament = await _eventProducer.SendRequest<int, bool?>(request.IdMatch, Queues.Queues.IS_FREE_MATCH_TOURNAMENT);
 
             if (isFreeMatchTournament == null) throw new BusinessRuleException("Match provided could be null");
+                    string? id = _connectionManager.GetConnectionIdByUser(request.IdMatch, request.IdUser);
 
             if (isFreeMatchTournament == true && roleJoiner.Equals(Roles.VIEWER))
             {
                 //validates if user can join stream, if can join, it would add user
-                bool canJoin = await _streamViewerService.CanJoinStream(request.IdMatch, request.IdUser);
-                string? id = _connectionManager.GetConnectionIdByUser(request.IdMatch, request.IdUser);
+                bool canJoin = await _streamViewerService.CanJoinStream(request.IdMatch, request.IdUser, true);
                 if (!canJoin)
                 {
-                    _connectionManager.RemoveConnection(id);
+                    if (id != null)
+                        _connectionManager.RemoveConnection(id);
                     throw new BusinessRuleException("Viewers have reached the free limit");
                 }
             }
             else
             {
-                switch (roleJoiner)
-                {
-                    case Roles.VIEWER:
-                        //VALIDO TICKET E INCREMENTO LOS VIEWERS
-                        var requestUseViewer = await _ticketHttpClient.UseTicket(request);
-                        break;
-                    case Roles.PARTICIPANT:
-                        //VALIDOT TICKET
-                        var requestUseParticipant = await _ticketHttpClient.UseTicket(request);
-                        break;
-                }
+                var requestUseParticipant = await _ticketHttpClient.UseTicket(request);
+                await _streamViewerService.CanJoinStream(request.IdMatch, request.IdUser, false);
             }
+
 
         }
 

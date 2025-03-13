@@ -15,13 +15,13 @@ namespace StreamsMS.Application.Services
             _redisViewerService = redisViewer;
         }
 
-        public async  Task<bool> CanJoinStream(int matchId, int idUser)
+        public async  Task<bool> CanJoinStream(int matchId, int idUser, bool hasLimit)
         {
             //VALIDATIONS USER
             //VALIDAR TORNEO GRATIS Y LIMITE
             int currentViewers = await _redisViewerService.GetViewerCountAsync(matchId);
 
-            if (currentViewers >= LIMIT_FREE_VIEWERS) return false;
+            if (hasLimit==true && currentViewers >= LIMIT_FREE_VIEWERS) return false;
             
             await _redisViewerService.AddViewerAsync(matchId);
 

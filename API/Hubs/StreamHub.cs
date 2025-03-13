@@ -21,7 +21,7 @@ namespace StreamsMS.API.Hubs
 
             _connectionManger.AddConnection(connectionId, matchId, userId);
 
-            bool allowed = await _streamViewerService.CanJoinStream(matchId, userId);
+            bool allowed = await _streamViewerService.CanJoinStream(matchId, userId,true);
 
             if (!allowed)
             {

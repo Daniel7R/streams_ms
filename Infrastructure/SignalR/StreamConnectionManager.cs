@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using Newtonsoft.Json;
+using System.Collections.Concurrent;
 
 namespace StreamsMS.Infrastructure.SignalR
 {
@@ -17,6 +18,7 @@ namespace StreamsMS.Infrastructure.SignalR
 
         public string GetConnectionIdByUser(int matchId, int userId)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(_connections));
             return _connections.FirstOrDefault(x => x.Value.idMatch == matchId && x.Value.idUser == userId).Key;
         }
 

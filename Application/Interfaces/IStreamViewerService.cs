@@ -2,7 +2,7 @@
 {
     public interface IStreamViewerService
     {
-        Task<bool> CanJoinStream(int matchId, int idUser);
+        Task<bool> CanJoinStream(int matchId, int idUser, bool hasLimit);
         Task LeaveStreamAsync(int idMatch, int idUser);
     }
 }
