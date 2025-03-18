@@ -13,7 +13,7 @@ using StreamsMS.Infrastructure.Auth;
 using StreamsMS.Infrastructure.Http;
 using StreamsMS.Infrastructure.Swagger;
 using System.Text.Json.Serialization;
-
+ 
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -32,6 +32,18 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
     c.SchemaFilter<EnumSchemaFilter>(); // Enables los enums as string
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT: Bearer {token}"
+    });
+
+    c.OperationFilter<AuthHeaderOperationFilter>();
 });
 
 builder.Services.Configure<RabbitMQSettings>(builder.Configuration.GetSection("RabbitMQ"));
@@ -47,6 +59,7 @@ builder.Services.AddScoped<IStreamRepository, StreamsRepository>();
 
 builder.Services.AddScoped<IStreamViewerService, StreamViewerService>();
 builder.Services.AddScoped<IStreamsService, StreamsService>();
+builder.Services.AddScoped<IPlatformsService, PlatformsService>();
 
 builder.Services.AddScoped<RedisViewerService>();
 builder.Services.AddSingleton<StreamConnectionManager>();
