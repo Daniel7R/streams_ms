@@ -13,7 +13,8 @@ using StreamsMS.Infrastructure.Auth;
 using StreamsMS.Infrastructure.Http;
 using StreamsMS.Infrastructure.Swagger;
 using System.Text.Json.Serialization;
- 
+using Prometheus;
+
 Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -89,10 +90,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRouting();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseHttpMetrics();
+
+app.UseEndpoints(endpoints => {
+    endpoints.MapMetrics();
+});
 
 app.MapControllers();
 //signal r connect
