@@ -89,7 +89,7 @@ namespace StreamsMS.API.Controllers
                 if (string.IsNullOrEmpty(user)) throw new BusinessRuleException("Invalid User");
                 int idUser = Convert.ToInt32(user);
                 var status = await _streamService.ChangeUrlStream(request, streamId, idUser);
-
+                response.Message="Url successfully changed";
                 return Ok(response);
             }
             catch (BusinessRuleException ru)
@@ -179,26 +179,40 @@ namespace StreamsMS.API.Controllers
             }
         }
 
-
-        [HttpPost]
-        [Route("leave",Name ="LeaveStream")]
-        public async Task<IActionResult> LeaveStream()
-        {
-            return Ok(new { message = "Acceso concedido al stream." });
-
-        }
-
+        /// <summary>
+        /// Get the viewers count on a stream
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{matchId}/viewers", Name ="GetViewersCount")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ResponseDTO<ViewersCountDTO?>))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type= typeof(ResponseDTO<ViewersCountDTO?>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type= typeof(ResponseDTO<ViewersCountDTO?>))]
         public async Task<IActionResult> GetViewerCount(int matchId)
         {
-            int count = await _redisViewerService.GetViewerCountAsync(matchId);
-            return Ok(new { matchId, viewers = count });
+            var response = new ResponseDTO<ViewersCountDTO>();
+            try{
+                
+                var counterMatch= await _streamViewerService.GetViewersByMatch(matchId);
+                response.Result= counterMatch;
+                response.Message= "Successfully requested";
+                
+                return Ok(response);
+            } catch (BusinessRuleException br){
+                response.Message= br.Message;
+
+                return BadRequest(response);
+            } catch(Exception ex){
+                response.Message= ex.Message;
+
+                return StatusCode(500,response);
+            }
         }
 
 
         /// <summary>
-        /// Remove user from stream(block to user)
+        /// Remove user from stream(block to user and it would be through a signalR request)
         /// </summary>
         /// <param name="matchId"></param>
         /// <param name="userId"></param>

@@ -136,11 +136,14 @@ namespace StreamsMS.Application.Services
                         _connectionManager.RemoveConnection(id);
                     throw new BusinessRuleException("Viewers have reached the free limit");
                 }
+
+                _connectionManager.AddConnection(id, request.IdMatch, request.IdUser);
             }
             else
             {
                 var requestUseParticipant = await _ticketHttpClient.UseTicket(request);
                 await _streamViewerService.CanJoinStream(request.IdMatch, request.IdUser, false);
+                _connectionManager.AddConnection(id, request.IdMatch, request.IdUser);
             }
 
 

@@ -4,8 +4,6 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<UserSecretsId>28302da8-0ac6-4b3d-b07d-0dcd55350d48</UserSecretsId>
-		 <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
@@ -25,6 +23,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+		<PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
+
+			<PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+		<PackageReference Include="Moq" Version="4.16.1" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+		
 
 	</ItemGroup>
 

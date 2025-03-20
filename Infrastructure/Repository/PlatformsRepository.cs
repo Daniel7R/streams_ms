@@ -16,5 +16,9 @@ namespace StreamsMS.Infrastructure.Repository
         {
             return await _context.Platforms.Where(p => p.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<IEnumerable<Platforms>> GetAll(){
+            return await _context.Platforms.ToListAsync();
+        }
     }
 }
