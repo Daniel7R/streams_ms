@@ -117,11 +117,29 @@ Swagger automáticamente genera la documentación de la API. Para ver la documen
 }
 ```
 
-- [POST] `/api/v1/streams/viewer/join`
+- [POST] `/api/v1/streams/viewer/join`: para un espectador tratar de unirse al stream de un evento(partido), al proporcionar el id del evento, el tipo de ticket y el respectivo codigo para unirse(en caso de que lo requiera, si el evento es pago es requerido, si es gratis no se requiere para los espectadores)
 
+***Headers***:
+    - **Authorization**: Bearer some-token
 
-- [POST] `/api/v1/streams/participant/join`
+***Body***:
+```
+{
+  "code": "TKT-20250318215405-9G0T3B",
+  "idMatch": 4,
+  "type": "VIEWER"
+}
+```
 
+***Respuesta***:
+```
+{
+    "result": null,
+    "message": "Successfully joined"
+}
+```
+
+- [POST] `/api/v1/streams/participant/join`: para que los participantes puedan unirse al evento(partido) dentro del torneo
 
 ### Platforms
 

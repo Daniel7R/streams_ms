@@ -179,6 +179,11 @@ namespace StreamsMS.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Get the viewers count on a stream
+        /// </summary>
+        /// <param name="matchId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{matchId}/viewers", Name ="GetViewersCount")]
         [ProducesResponseType(StatusCodes.Status200OK, Type= typeof(ResponseDTO<ViewersCountDTO?>))]

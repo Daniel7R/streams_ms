@@ -1,4 +1,5 @@
-﻿using StreamsMS.Domain.Enums;
+﻿using System.Text.Json.Serialization;
+using StreamsMS.Domain.Enums;
 
 namespace StreamsMS.Application.DTOs.Request
 {
