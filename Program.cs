@@ -81,6 +81,7 @@ builder.Services.AddSignalR();
 
 builder.AddAppAuthentication();
 builder.Services.AddAuthorization();
+Metrics.SuppressDefaultMetrics();
 
 var app = builder.Build();
 
