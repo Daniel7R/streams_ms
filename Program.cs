@@ -101,6 +101,8 @@ app.UseEndpoints(endpoints => {
     endpoints.MapMetrics();
 });
 
+app.MapGet("/", () => Results.Ok("Healthy"));
+
 app.MapControllers();
 //signal r connect
 app.MapHub<StreamHub>("/streamHub");
