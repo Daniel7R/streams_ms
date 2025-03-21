@@ -143,7 +143,8 @@ namespace StreamsMS.Application.Services
             {
                 var requestUseParticipant = await _ticketHttpClient.UseTicket(request);
                 await _streamViewerService.CanJoinStream(request.IdMatch, request.IdUser, false);
-                _connectionManager.AddConnection(id, request.IdMatch, request.IdUser);
+                if(id != null)
+                    _connectionManager.AddConnection(id, request.IdMatch, request.IdUser);
             }
 
 
