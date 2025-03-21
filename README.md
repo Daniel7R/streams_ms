@@ -139,7 +139,7 @@ Swagger automáticamente genera la documentación de la API. Para ver la documen
 }
 ```
 
-- [POST] `/api/v1/streams/participant/join`: para que los participantes puedan unirse al evento(partido) dentro del torneo
+- [POST] `/api/v1/streams/participant/join`: para que los participantes puedan unirse al evento(partido) dentro del torneo con un codigo de ticket valido
 
 ### Platforms
 
