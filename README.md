@@ -139,7 +139,28 @@ Swagger automáticamente genera la documentación de la API. Para ver la documen
 }
 ```
 
-- [POST] `/api/v1/streams/participant/join`: para que los participantes puedan unirse al evento(partido) dentro del torneo con un codigo de ticket valido
+- [POST] `/api/v1/streams/participant/join`: para que los participantes puedan unirse al evento(partido) dentro del torneo con un codigo de ticket valido(se valida que el ticket pertenezca al mismo usuario que envia la peticion)
+
+***Headers***:
+    - **Authorization**: Bearer some-token
+
+***Body***:
+```
+{
+  "code": "TKT-20250319225408-YZ0594",
+  "idMatch": 2,
+  "type": "PARTICIPANT"
+}
+```
+
+***Respuesta***:
+```
+{
+    "result": null,
+    "message": "Successfully joined"
+}
+```
+
 
 ### Platforms
 
