@@ -14,12 +14,6 @@ namespace StreamsMS.Application.Interfaces
         /// <returns>Streams</returns>
         public Task<StreamResponseDTO> CreateStream(CreateStreamRequest streamsCreate, int idUser);
         /// <summary>
-        /// Gets the url for stream match
-        /// </summary>
-        /// <param name="idMatch"></param>
-        /// <returns></returns>
-        public Task<Streams> GetStreamByIdMatch(int idMatch);
-        /// <summary>
         /// Change the url stream
         /// </summary>
         /// <param name="streamsChangeUrlStream"></param>

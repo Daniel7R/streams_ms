@@ -40,22 +40,7 @@ namespace StreamsMS.Application.Services
             ValidateUrlWithRegex(streamsChangeUrlStream.NewUrl.ToString());
             var stream = await _streamRepo.GetById(idStream);
             if (stream == null || stream.Id == 0) throw new BusinessRuleException("Stream does not exist");
-            /*
-            var request = new ValidateMatchRoleUser
-            {
-                IdMatch = stream.IdMatch,
-                IdUser = idUser
-            };
-            var validation = await _eventProducer.SendRequest<ValidateMatchRoleUser, ValidateMatchRoleUserResponse>(request, Queues.Queues.VALIDATE_MATCH_AND_ROLE);
 
-            if (validation != null && !validation.IsExistingMatch)
-            {
-                throw new BusinessRuleException("Match does not exist");
-            }
-            if (validation != null && !validation.IsValidRoleUser)
-            {
-                throw new InvalidRoleException("User has no permissions");
-            }*/
             await ValidateMatchRole(idUser, stream.IdMatch);
 
             await _streamRepo.ChangeUrlStream(idStream, streamsChangeUrlStream.NewUrl);
@@ -68,25 +53,8 @@ namespace StreamsMS.Application.Services
             //validate uri
             ValidateUrlWithRegex(streamsCreate.StreamUrl.ToString());
             //VALIDAR PARTIDO Y ROL USER
-            /*
-            var request = new ValidateMatchRoleUser
-            {
-                IdMatch = streamsCreate.IdMatch,
-                IdUser = idUser
-            };
-            var validation = await _eventProducer.SendRequest<ValidateMatchRoleUser, ValidateMatchRoleUserResponse>(request, Queues.Queues.VALIDATE_MATCH_AND_ROLE);
-
-            if(validation != null && !validation.IsExistingMatch)
-            {
-                throw new BusinessRuleException("Match does not exist");
-            }
-            if(validation !=null && !validation.IsValidRoleUser)
-            {
-                throw new InvalidRoleException("User has no permissions");
-            }*/
+        
             await ValidateMatchRole(idUser, streamsCreate.IdMatch);
-
-
             //validate platform
             var platform = await _platformRepo.GetById(streamsCreate.IdPlatform);
             if (platform == null || platform.Id == 0) throw new BusinessRuleException("Invalid platform provided");
@@ -111,15 +79,9 @@ namespace StreamsMS.Application.Services
             return streamResponse;
         }
 
-        public Task<Streams> GetStreamByIdMatch(int idMatch)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task JoinStream(UseTicketRequest request, Roles roleJoiner)
         {
-
-
             //VALIDATE TOURNAMENT IS FREE
             var isFreeMatchTournament = await _eventProducer.SendRequest<int, bool?>(request.IdMatch, Queues.Queues.IS_FREE_MATCH_TOURNAMENT);
 
