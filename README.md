@@ -197,3 +197,9 @@ Swagger automáticamente genera la documentación de la API. Para ver la documen
 ## RabbitMQ(EventBus)
 
 En el proyecto se hace uso de RabbitMQ como Message Broker para procesamiento de eventos sincronos con el patron de integracion Request/Reply. 
+
+- `tournament.validate`: validar si el partido al que se le asigna un stream del torneo existe o verificar si es evento gratuito.
+
+- `match.info`: obtiene la info si existe, del partido para mostrar los espectadores que hay en un stream
+
+- `match.role.user`: para verificar los permisos que tiene el usuario para ejecutar la creacion/modificacion de streams que estan asociados a los eventos de un torneo
