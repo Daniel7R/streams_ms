@@ -167,6 +167,7 @@ namespace StreamsMS.API.Controllers
                 request.IdUser = idUser;
                 await _streamService.JoinStream(request, Roles.PARTICIPANT);
                 
+                response.Message= "Successfully joined";
                 return Ok(response);
             } catch(BusinessRuleException br)
             {
